@@ -1,9 +1,9 @@
-import { Given, When, Then, And } from "cypress-cucumber-preprocessor/steps";
-import commonPage from '../page-objects/common-page';
-// import { FN, LN } from "./add-customer";
-import { Utility } from "../utility";
-// import { associateLogin, trigger, ndcInfo, addingStock } from "../api-integration/api-methods";
-// import { newNdc, lotNumber } from "./fill";
+import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
+import commonPage from '../../support/page-objects/common-page';
+import { FN, LN } from "./add-customer";
+import { Utility } from "../../support/utility";
+import { associateLogin, trigger, ndcInfo, addingStock } from "../api-integration/api-methods";
+import { newNdc, lotNumber } from "./fill";
 
 const url = new Utility().getUrl();
 const commonPageObj = new commonPage();
@@ -14,7 +14,7 @@ Given('I open the website', function () {
   cy.log('Opening URL is: ' + url);
   cy.clearCookies();
   cy.clearLocalStorage();
-  cy.visit(url);
+  cy.visit("https://int.quickfill.dev/");
 });
 
 When('I enter Email, Password of {string}', function (userRole) {

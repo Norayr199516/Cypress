@@ -1,29 +1,25 @@
-const { defineConfig } = require('cypress');
-const createBundler = require('@bahmutov/cypress-esbuild-preprocessor');
-const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild');
-const addCucumberPreprocessorPlugin = require('@badeball/cypress-cucumber-preprocessor').addCucumberPreprocessorPlugin;
+import { defineConfig } from 'cypress';
+import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
+import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild';
+import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
 
-module.exports = defineConfig({
+export default defineConfig({
   e2e: {
-    specPattern: '**/*.feature',
-    baseUrl: "https://int.quickfill.dev/", // Update this if needed
-    supportFile: "cypress/support/e2e.js",
+    specPattern: 'cypress/e2e/features/**/*.feature',
+    supportFile: 'cypress/support/e2e.js',
     async setupNodeEvents(on, config) {
-      await addCucumberPreprocessorPlugin(on, config);
+      await addCucumberPreprocessorPlugin(on, config, {
+        stepDefinitions: 'cypress/e2e/step-definitions/**/*.js'
+      });
 
       on(
         'file:preprocessor',
         createBundler({
-          plugins: [createEsbuildPlugin.default(config)],
+          plugins: [createEsbuildPlugin(config)],
         })
       );
 
       return config;
     },
-    cucumber: {
-      stepDefinitions: [
-        "cypress/e2e/step_definitions/*.js"
-      ]
-    }
   },
 });
